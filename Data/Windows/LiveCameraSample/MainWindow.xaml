@@ -1,0 +1,76 @@
+﻿<Window x:Class="LiveCameraSample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LiveCameraSample"
+        mc:Ignorable="d"
+          WindowState="Maximized"
+          WindowStyle="None"
+        Title="IDCRecognition" Height="550" Width="725">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="35" />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Name="ButtonBar">
+            <ComboBox x:Name="CameraList" Width="100" Margin="5,5,0,5" Loaded="CameraList_Loaded" />
+            <Button Content="Start Camera" Padding="5,0" Margin="5,5,0,5" Click="StartButton_Click" />
+            <Button Content="Stop Camera" Padding="5,0" Margin="5,5,0,5" Click="StopButton_Click" />
+            <TextBlock VerticalAlignment="Center" Margin="15,9,0,9.667" Text="Mode:" />
+            <ComboBox x:Name="ModeList" Width="100" Margin="5,5,0,4.667" Loaded="ModeList_Loaded" SelectionChanged="ModeList_SelectionChanged" />
+            <Button Content="Full Screen" Padding="5,0" Margin="5,5,0,4.667" Click="FullScreen_Click" />
+        </StackPanel>
+        <Button Content="Show/Hide Settings" Padding="5,0" Margin="5" Click="SettingsButton_Click" HorizontalAlignment="Right" />
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="138*" />
+                <ColumnDefinition Width="187*"/>
+                <ColumnDefinition Width="34*"/>
+                <ColumnDefinition Width="10*" />
+                <ColumnDefinition Width="282*"/>
+                <ColumnDefinition Width="32*"/>
+                <ColumnDefinition Width="36*"/>
+            </Grid.ColumnDefinitions>
+            <Image x:Name="LeftImage" Grid.Column="0" Margin="5,5,5.333,5" Grid.ColumnSpan="3"  />
+            <Image x:Name="RightImage" Margin="20,0,-0.334,10" Panel.ZIndex="1" Grid.ColumnSpan="7" Stretch="Fill"/>
+            <StackPanel Visibility="{Binding Source={StaticResource Settings}, Path=Default.SettingsPanelVisibility, Mode=TwoWay}" Grid.Column="3" Panel.ZIndex="2" Name="SettingsPanel" Background="LightGray" VerticalAlignment="Top" Margin="4.667,5,4.666,0" Grid.ColumnSpan="4">
+                <TextBlock Margin="5" Grid.Row="0" FontWeight="Bold" Text="Settings"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Margin="5" Grid.Row="0" Grid.Column="0" Text="Face API Key:" />
+                    <TextBox   Margin="5" Grid.Row="0" Grid.Column="1" Text="{Binding Source={StaticResource Settings}, Path=Default.FaceAPIKey, Mode=TwoWay}" />
+                    <TextBlock Margin="5" Grid.Row="1" Grid.Column="0" Text="Emotion API Key:" />
+                    <TextBox   Margin="5" Grid.Row="1" Grid.Column="1" Text="{Binding Source={StaticResource Settings}, Path=Default.EmotionAPIKey, Mode=TwoWay}" />
+                    <TextBlock Margin="5" Grid.Row="2" Grid.Column="0" Text="Vision API Key:" />
+                    <TextBox   Margin="5" Grid.Row="2" Grid.Column="1" Text="{Binding Source={StaticResource Settings}, Path=Default.VisionAPIKey, Mode=TwoWay}" />
+                    <TextBlock Margin="5" Grid.Row="4" Grid.Column="0" Text="API Call Interval:" />
+                    <TextBox   Margin="5" Grid.Row="4" Grid.Column="1" Text="{Binding Source={StaticResource Settings}, Path=Default.AnalysisInterval, Mode=TwoWay}" />
+                </Grid>
+                <TextBlock Margin="5,0,5,5">
+                    <Run Text="Face API calls made = "/><Run Text="{Binding Source={StaticResource Settings}, Path=Default.FaceAPICallCount}"/><LineBreak />
+                    <Run Text="Emotion API calls made = "/><Run Text="{Binding Source={StaticResource Settings}, Path=Default.EmotionAPICallCount}"/><LineBreak />
+                    <Run Text="Vision API calls made = "/><Run Text="{Binding Source={StaticResource Settings}, Path=Default.VisionAPICallCount}"/>
+                </TextBlock>
+
+                <CheckBox Margin="5" IsChecked="{Binding Source={StaticResource Settings}, Path=Default.IDCHoursEnabled}" ContentStringFormat=" {0} | Run according to IDC Times. Sunday - Thursday from 08:00 - 20:00, Friday from 08:00 - 14:00." Content="{Binding Source={StaticResource Settings}, Path=Default.IDCHoursEnabled}" />
+                <Button Margin="5" Content="Save" Click="SaveSettingsButton_Click" />
+            </StackPanel>
+            <Image x:Name="IDC_Communication_school_png" Margin="45,130,132.667,93" Source="IDC-Communication-school.png" Stretch="Fill" Grid.Column="1" Grid.ColumnSpan="4"/>
+        </Grid>
+        <TextBlock Name="MessageArea" Margin="5" Grid.Row="2" VerticalAlignment="Center" />
+    </Grid>
+</Window>
